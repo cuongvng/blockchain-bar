@@ -1,0 +1,7 @@
+{
+    "genesis_time": "Mon Jun 21 16:09:07 +07 2021",
+    "chain_id": "blockchain-bar",
+    "balances": {
+      "cuong": 1000000
+    }
+  }
