@@ -80,6 +80,24 @@ func (s *State) Apply(tx Tx) error {
 	return nil
 }
 
+func (s *State) SaveToDisk() error {
+	mempool := make([]Tx, len(s.txMempool))
+	copy(mempool, s.txMempool)
+
+	for i:=0; i<len(mempool); i++{
+		txJson, err := json.Marshal(mempool[i])
+		if err != nil{
+			return err
+		}
+		_, err = s.dbFile.Write(append(txJson, '\n'))
+		if err != nil{
+			return err
+		}
+		s.txMempool = s.txMempool[1:]
+	}
+	return nil
+}
+
 func (s *State) Close() {
 	s.dbFile.Close()
 }
