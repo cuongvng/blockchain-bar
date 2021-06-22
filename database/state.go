@@ -69,3 +69,7 @@ func (s *State) Apply(tx Tx)  error {
 
 	return nil
 }
+
+func (s *State) Close() {
+	s.dbFile.Close()
+}
