@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"text/scanner"
 )
 
 type State struct{
@@ -18,12 +17,12 @@ type State struct{
 func GetStateFromDisk() (*State, error){
 	cwd, err := os.Getwd()
 	if err != nil{
-		return *State{}, err
+		return &State{}, err
 	}
 
-	genesis, err = LoadGenesis(filepath.Join(cwd, "database", "genesis.json"))
+	genesis, err := LoadGenesis(filepath.Join(cwd, "database", "genesis.json"))
 	if err != nil{
-		return *State{}, err
+		return &State{}, err
 	}
 
 	balances := make(map[Account]uint32)
