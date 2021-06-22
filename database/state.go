@@ -54,7 +54,17 @@ func GetStateFromDisk() (*State, error){
 	return state, nil
 }
 
-func (s *State) Apply(tx Tx)  error {
+func (s *State) Add(tx Tx) error {
+	err := s.Apply(tx)
+	if err != nil{
+		return err
+	}
+
+	s.txMempool = append(s.txMempool, tx)
+	return nil
+}
+
+func (s *State) Apply(tx Tx) error {
 	if tx.IsReward(){
 		s.Balances[tx.To] += tx.Value
 		return nil
