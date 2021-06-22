@@ -54,3 +54,18 @@ func GetStateFromDisk() (*State, error){
 	return state, nil
 }
 
+func (s *State) Apply(tx Tx)  error {
+	if tx.IsReward(){
+		s.Balances[tx.To] += tx.Value
+		return nil
+	}
+
+	if s.Balances[tx.From] < tx.Value{
+		return fmt.Errorf("Insufficient balance to send")
+	}
+
+	s.Balances[tx.To] += tx.Value
+	s.Balances[tx.From] -= tx.Value
+
+	return nil
+}
