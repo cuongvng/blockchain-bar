@@ -14,7 +14,7 @@ func balancesCmd() *cobra.Command {
 		PreRunE: func(cmd *cobra.Command, args []string) error {
 			return incorrectUsageErr()
 		},
-		Run: func(cmd *cobra.Command, args []string) {}
+		Run: func(cmd *cobra.Command, args []string) {},
 	}
 	balanceCmd.AddCommand(listBalancesCmd())
 	return balanceCmd
@@ -38,7 +38,7 @@ func listBalancesCmd() *cobra.Command {
 			for account, balance := range state.Balances {
 				fmt.Println(fmt.Sprintf("%s: %d", account, balance))
 			}
-		}
+		},
 	}
 	return result
 }
