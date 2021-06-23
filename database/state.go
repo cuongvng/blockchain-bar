@@ -39,7 +39,7 @@ func GetStateFromDisk() (*State, error){
 		return nil, err
 	}
 	scanner := bufio.NewScanner(f)
-	state := &State{balances, make([]Tx, 0), f, Snapshot{}}
+	state := &State{balances, make([]Tx, 0), f, Hash{}}
 
 	for scanner.Scan(){
 		if err := scanner.Err(); err != nil{
@@ -111,22 +111,29 @@ func (s *State) getLastestHash() Hash {
 	return s.hash
 }
 
-func (s *State) SaveToDisk() error {
+func (s *State) SaveToDisk() (Hash, error) {
 	mempool := make([]Tx, len(s.txMempool))
 	copy(mempool, s.txMempool)
 
 	for i:=0; i<len(mempool); i++{
 		txJson, err := json.Marshal(mempool[i])
 		if err != nil{
-			return err
+			return Hash{}, err
 		}
 		_, err = s.dbFile.Write(append(txJson, '\n'))
 		if err != nil{
-			return err
+			return Hash{}, err
 		}
+
+		err = s.takeSnapshot()
+		if err != nil{
+			return Hash{}, err
+		}
+		fmt.Printf("New DB hash: %x\n", s.hash)
+
 		s.txMempool = s.txMempool[1:]
 	}
-	return nil
+	return s.hash, nil
 }
 
 func (s *State) Close() error{
