@@ -107,7 +107,7 @@ func (s *State) takeSnapshot() error {
 	return nil
 }
 
-func (s *State) getLastestHash() Hash {
+func (s *State) GetLastestHash() Hash {
 	return s.hash
 }
 
