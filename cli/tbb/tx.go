@@ -53,7 +53,7 @@ func txAddCmd() *cobra.Command {
 				os.Exit(1)
 			}
 
-			err = state.SaveToDisk()
+			_, err = state.SaveToDisk()
 			if err != nil {
 				fmt.Fprintln(os.Stderr, err)
 				os.Exit(1)
