@@ -47,13 +47,13 @@ func txAddCmd() *cobra.Command {
 			}
 			defer state.Close()
 
-			err = state.Add(tx)
+			err = state.AddTx(tx)
 			if err != nil {
 				fmt.Fprintln(os.Stderr, err)
 				os.Exit(1)
 			}
 
-			_, err = state.SaveToDisk()
+			_, err = state.Persist()
 			if err != nil {
 				fmt.Fprintln(os.Stderr, err)
 				os.Exit(1)
