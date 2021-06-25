@@ -4,6 +4,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"fmt"
 )
 
 func (h Hash) MarshalText() ([]byte, error) {
@@ -15,22 +16,22 @@ func (h *Hash) UnmarshalText(data []byte) error {
 }
 
 type Header struct{
-	parent Hash `json:"parent"`
-	time uint64	`json:"time"`
+	Parent Hash `json:"parent"`
+	Time uint64	`json:"time"`
 }
 
 type Block struct{
-	header Header `json:"hash"`
-	txs []Tx `json:"payload"`
+	Header Header `json:"header"`
+	TXs []Tx `json:"payload"`
 }
 
 type BlockFS struct{
-	key Hash `json:"hash"`
-	value Block `json:"block"`
+	Key Hash `json:"hash"`
+	Value Block `json:"block"`
 }
 
 func CreateNewBlock(parent Hash, time uint64, txs []Tx) Block {
-	return Block{Header{parent: parent, time: time}, txs}
+	return Block{Header{parent, time}, txs}
 }
 
 func (b Block) Hash() (Hash, error) {
@@ -38,6 +39,6 @@ func (b Block) Hash() (Hash, error) {
 	if err != nil{
 		return Hash{}, err
 	}
-
+	fmt.Printf("%x", sha256.Sum256(blockJson))
 	return sha256.Sum256(blockJson), nil
 }

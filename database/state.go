@@ -52,17 +52,17 @@ func GetStateFromDisk() (*State, error){
 			return nil, err
 		}
 
-		err := state.ApplyBlock(blockFs.value)
+		err := state.ApplyBlock(blockFs.Value)
 		if err != nil{
 			return nil, err
 		}
-		state.lastestHash = blockFs.key
+		state.lastestHash = blockFs.Key
 	}
 	return state, nil
 }
 
 func (s *State) AddBlock(block Block) error {
-	for _, tx := range block.txs{
+	for _, tx := range block.TXs{
 		err := s.AddTx(tx)
 		if err != nil{
 			return err
@@ -79,7 +79,7 @@ func (s *State) AddTx(tx Tx) error {
 }
 
 func (s *State) ApplyBlock(block Block) error {
-	for _, tx := range block.txs{
+	for _, tx := range block.TXs{
 		err := s.apply(tx)
 		if err != nil{
 			return err
@@ -118,7 +118,6 @@ func (s *State) Persist() (Hash, error) {
 	if err != nil{
 		return Hash{}, err
 	}
-
 	fmt.Printf("Persisting new Block to disk:\n")
 	fmt.Printf("\t%s\n", blockFsJson)
 
