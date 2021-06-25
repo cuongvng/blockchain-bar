@@ -6,7 +6,7 @@ import(
 )
 
 type Genesis struct{
-	Balances map[Account]uint32 `json:"balances`
+	Balances map[Account]uint32 `json:"balances"`
 }
 
 func LoadGenesis(path string) (Genesis, error){
